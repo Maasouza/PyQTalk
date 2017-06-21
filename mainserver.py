@@ -1,7 +1,7 @@
 import socket, select, sys, json
 
 
-TCP_IP = "127.0.0.1"
+TCP_IP = socket.gethostbyname(socket.gethostname())
 TCP_PORT = raw_input("Start server at port: ")
 BUFFER_SIZE = 1024
 
