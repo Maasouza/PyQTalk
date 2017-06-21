@@ -14,6 +14,7 @@ class MainWindow(QtGui.QDialog):
         if clickedItem != None:
             user = str(self.list.currentItem().text())
             ip = self.userList[user]
+            print ip
             if ip != None:
                 chat = Chat(self.username, user, ip)
                 self.chats[user] = chat

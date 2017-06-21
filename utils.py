@@ -75,6 +75,7 @@ class Chat(QtGui.QDialog):
         self.layout = QtGui.QGridLayout(self)
         try:            
             if self.connect(ip):
+                
                 #Text
                 self.scroll = QtGui.QScrollArea(self)
                 self.scroll.setWidgetResizable(True)
@@ -103,7 +104,9 @@ class Chat(QtGui.QDialog):
                 self.accept()
 
         except Exception as e:
-            print e;
+            print e
+
+
 class Message():
 
     def __init__(self, user="", message=""):

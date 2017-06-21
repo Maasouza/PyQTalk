@@ -12,7 +12,7 @@ class UserServer(QtCore.QThread):
 		self.BUFFER_SIZE = 1024
 		self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.running=False
-		self.serversocket.bind(('', self.TCP_PORT))
+		self.serversocket.bind(("LOCALHOST", self.TCP_PORT))
 		self.serversocket.listen(5)
 
 		self.generate_certificate()
