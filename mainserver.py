@@ -1,13 +1,13 @@
 import socket, select, sys, json
 
 
-TCP_IP = socket.gethostbyname(socket.gethostname())
+TCP_IP = "127.0.0.1"
 TCP_PORT = raw_input("Start server at port: ")
 BUFFER_SIZE = 1024
 
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((TCP_IP, int(TCP_PORT)))
+server.bind(("", int(TCP_PORT)))
 server.listen(5)
 
 connections = []
@@ -30,6 +30,7 @@ while 1:
 		if s == server:
 			connection, address = server.accept()
 			socketIP[connection] = address[0]
+			print address
 			connections.append(connection)
 			
 		else:

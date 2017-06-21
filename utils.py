@@ -73,36 +73,37 @@ class Chat(QtGui.QDialog):
         self.setWindowTitle(str(contact))
         self.resize(600, 400)
         self.layout = QtGui.QGridLayout(self)
-        
-        if self.connect(ip):
-            #Text
-            self.scroll = QtGui.QScrollArea(self)
-            self.scroll.setWidgetResizable(True)
-            self.scrollAreaWidgetContents = QtGui.QWidget()
-            self.scroll.setWidget(self.scrollAreaWidgetContents)
-            self.chatText = QtGui.QTextBrowser(self.scrollAreaWidgetContents)
-            self.layout.addWidget(self.scrollArea, 0, 0, 1, 2)
-            self.layout.addWidget(self.chatText, 0, 0, 1, 2)
+        try:            
+            if self.connect(ip):
+                #Text
+                self.scroll = QtGui.QScrollArea(self)
+                self.scroll.setWidgetResizable(True)
+                self.scrollAreaWidgetContents = QtGui.QWidget()
+                self.scroll.setWidget(self.scrollAreaWidgetContents)
+                self.chatText = QtGui.QTextBrowser(self.scrollAreaWidgetContents)
+                self.layout.addWidget(self.scroll, 0, 0, 1, 2)
+                self.layout.addWidget(self.chatText, 0, 0, 1, 2)
 
-            #SendButton
-            self.pushButton = QtGui.QPushButton(self)
-            self.pushButton.setText("Send")
-            self.pushButton.setMinimumWidth(50)
-            self.pushButton.setMinimumHeight(45)
-            QtCore.QObject.connect(self.sendButton, QtCore.SIGNAL("clicked()"), self.clickedButton)
-            self.layout.addWidget(self.sendButton, 1, 1)
+                #SendButton
+                self.pushButton = QtGui.QPushButton(self)
+                self.pushButton.setText("Send")
+                self.pushButton.setMinimumWidth(50)
+                self.pushButton.setMinimumHeight(45)
+                QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL("clicked()"), self.clickedButton)
+                self.layout.addWidget(self.pushButton, 1, 1)
 
-            #messageText
-            self.messageText = QtGui.QLineEdit(self)
-            self.layout.addWidget(self.messageText, 1, 0)
+                #messageText
+                self.messageText = QtGui.QLineEdit(self)
+                self.layout.addWidget(self.messageText, 1, 0)
 
-            self.setLayout(self.layout)
-            self.show()
+                self.setLayout(self.layout)
+                self.show()
 
-        else:
-            self.accept()
+            else:
+                self.accept()
 
-
+        except Exception as e:
+            print e;
 class Message():
 
     def __init__(self, user="", message=""):
