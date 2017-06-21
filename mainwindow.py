@@ -1,9 +1,9 @@
 import sys
 from PyQt4 import QtCore, QtGui
-#from nameclient import NameClient
-#from chat import Chat
-#from chatserver import ChatServer
-#from message import Message
+from client import *
+from utils import *
+from userserver import *
+
 
 
 class MainWindow(QtGui.QDialog):
@@ -14,25 +14,25 @@ class MainWindow(QtGui.QDialog):
             user = str(self.list.currentItem().text())
             ip = self.userList[user]
             if ip != None:
-                chat = Chat(self.username, user, ip, self.ciphers)
+                chat = Chat(self.username, user, ip)
                 self.chats[user] = chat
 
     def receivedMessage(self, data):
         message = Message()
         message.fromJson(str(data))
-        user = message.getUser(self.hostname,self.portnumber)
+        user = message.getUser()
         if user in self.chats:
             chat = self.chats[user]
             chat.receiveMessage(message)
         else:
             self.refreshUsersList()
             addrs = self.userList[user]
-            chat = Chat(self.username, user, addrs, self.ciphers)
+            chat = Chat(self.username, user, addrs)
             self.chats[user] = chat
             chat.receiveMessage(message)
 
     def getUsers(self,host,port):
-        client = NameClient(host,port)
+        client = Client(host,port)
         if(client.connect()):
             client.sendUsername(self.username)
             return client.receiveUserList()
@@ -40,30 +40,29 @@ class MainWindow(QtGui.QDialog):
             return {'Server error':None}
 
     def refreshUsersList(self):
-        self.userList = self.getUsers()
+        self.userList = self.getUsers(self.hostname,self.portnumber)
         users = list(self.userList)
         self.list.clear()
         self.list.addItems(users)
 
-    def serverDisconnect(self):
-        client = NameClient()
+    def serverDisconnect(self,host,port):
+        client = Client(host,port)
         if(client.connect()):
             client.sendUsername("REMOVE:"+self.username)
 
     def closeChat(self):
-        self.serverDisconnect()
-        self.chatserver.end()
+        self.serverDisconnect(self.hostname,self.portnumber)
+        self.userserver.end()
 
-    def __init__(self, username, ciphers,hostname,portnumber):
+    def __init__(self, username,hostname,portnumber):
         super(MainWindow, self).__init__()
         self.username = username
-        self.ciphers = ciphers
         self.hostname = hostname
-        self.portnumber = hostname
+        self.portnumber = portnumber
 
-        self.chatserver = ChatServer(self.ciphers)
-        self.connect( self.chatserver, QtCore.SIGNAL("update(QString)"), self.receivedMessage )
-        self.chatserver.start()
+        self.userserver = UserServer()
+        self.connect( self.userserver, QtCore.SIGNAL("update(QString)"), self.receivedMessage )
+        self.userserver.start()
         
         self.chats = dict()
         title = "Users Connected"
@@ -74,7 +73,7 @@ class MainWindow(QtGui.QDialog):
 
         #users online listWidget 
         self.list = QtGui.QListWidget()
-        self.userList = self.getUsers()
+        self.userList = self.getUsers(self.hostname,self.portnumber)
         users = list(self.userList)
         self.list.addItems(users)
         self.layout.addWidget(self.list, 0, 0, 1, 3)
