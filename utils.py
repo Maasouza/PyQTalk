@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import socket, ssl, sys, errno
 from PyQt4 import QtCore, QtGui
 from datetime import datetime
@@ -13,6 +15,8 @@ class Chat(QtGui.QDialog):
     def sendMessage(self, message):
         self.chatLog.append(message)
         self.refreshChatMessages()
+        self.messageText.clear()
+
         try:
             self.sslSocket.send(message.toJson())
         except ssl.SSLError as e:
@@ -44,11 +48,11 @@ class Chat(QtGui.QDialog):
     def clickedButton(self):
         text = self.messageText.text()
         message = Message(self.username, text)
-        self.sendMessage(message)
+        if not (text == ""):
+            self.sendMessage(message)
 
     def refreshChatMessages(self):
         html = ""
-        self.messageText.clear()
         for post in self.chatLog:
             if post.getUser() == self.username:
                 html += '<div align="right">'

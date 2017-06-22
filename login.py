@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from PyQt4 import QtCore, QtGui
 import sys
 from mainwindow import MainWindow
@@ -54,6 +56,7 @@ class Login(QtGui.QDialog):
                 self.userMainWindow = MainWindow(username, hostname,portnumber)
                 self.accept()
             except Exception as e:
+                print e
                 self.error = ErrorUI("Error try again later")
             
         else:

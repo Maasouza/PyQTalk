@@ -1,9 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import sys
 from PyQt4 import QtCore, QtGui
 from client import *
 from utils import *
 from userserver import *
-import random
 
 
 
@@ -14,8 +15,7 @@ class MainWindow(QtGui.QDialog):
         if clickedItem != None:
             user = str(self.list.currentItem().text())
             ip = self.userList[user]
-            print ip
-            if ip != None:
+            if ip != None and user!=self.username:
                 chat = Chat(self.username, user, ip)
                 self.chats[user] = chat
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import socket, select, sys, ssl, os.path
 from PyQt4 import QtCore
 from utils import Message
