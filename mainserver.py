@@ -30,7 +30,6 @@ while 1:
 		if s == server:
 			connection, address = server.accept()
 			socketIP[connection] = address[0]
-			print address
 			connections.append(connection)
 			
 		else:

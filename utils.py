@@ -75,7 +75,7 @@ class Chat(QtGui.QDialog):
         self.layout = QtGui.QGridLayout(self)
         try:            
             if self.connect(ip):
-                
+
                 #Text
                 self.scroll = QtGui.QScrollArea(self)
                 self.scroll.setWidgetResizable(True)
