@@ -45,6 +45,8 @@ while 1:
 						None
 				else:
 					if not "GET" in receivedData:
+						if(receivedData not in users):
+							print receivedData + " connected"
 						users[receivedData] = socketIP[s]
 					s.send(json.dumps(users))
 			except:
